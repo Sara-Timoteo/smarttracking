@@ -5,11 +5,17 @@
 -- auth.users. This trigger fires AFTER that insert and creates the
 -- corresponding row in public.profiles, pulling optional fields from
 -- raw_user_meta_data when available.
+--
+-- IMPORTANT: SET search_path is required because triggers fired from
+-- the auth schema do not have public in search_path by default, so
+-- references to public types/tables must either be qualified OR the
+-- search_path must be set explicitly. We do both (defense in depth).
 
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger
 LANGUAGE plpgsql
 SECURITY DEFINER
+SET search_path = public, pg_temp
 AS $$
 BEGIN
   INSERT INTO public.profiles (id, display_name, onboarding_path)
@@ -20,8 +26,8 @@ BEGIN
       split_part(NEW.email, '@', 1)
     ),
     COALESCE(
-      (NEW.raw_user_meta_data->>'onboarding_path')::granted_by_role_enum,
-      'self'
+      (NEW.raw_user_meta_data->>'onboarding_path')::public.granted_by_role_enum,
+      'self'::public.granted_by_role_enum
     )
   );
   RETURN NEW;
