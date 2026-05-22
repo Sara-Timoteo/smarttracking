@@ -22,3 +22,8 @@ CREATE POLICY measurements_select_caregiver ON measurements
         AND (expires_at IS NULL OR expires_at > now())
     )
   );
+
+  -- 3. INSERT: owner can insert their own measurements
+CREATE POLICY measurements_insert_owner ON measurements
+  FOR INSERT
+  WITH CHECK (user_id = auth.uid());
