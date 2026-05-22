@@ -10,3 +10,9 @@ CREATE POLICY relationships_select_party ON relationships
     granter_id = auth.uid()
     OR grantee_id = auth.uid()
   );
+
+  -- 2. UPDATE: granter can update their own relationships (typically to revoke)
+CREATE POLICY relationships_update_granter ON relationships
+  FOR UPDATE
+  USING (granter_id = auth.uid())
+  WITH CHECK (granter_id = auth.uid());
