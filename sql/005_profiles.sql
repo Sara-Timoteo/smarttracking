@@ -1,6 +1,6 @@
--- =====================================================================
+
 -- 005_profiles.sql — extends auth.users 1:1 with project-specific fields
--- =====================================================================
+
 CREATE EXTENSION IF NOT EXISTS pgcrypto;  -- for gen_random_uuid()
 
 CREATE TABLE profiles (
