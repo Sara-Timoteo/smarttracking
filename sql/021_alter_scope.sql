@@ -1,0 +1,1 @@
+ALTER TYPE relationship_scope ADD VALUE IF NOT EXISTS 'data_source';
