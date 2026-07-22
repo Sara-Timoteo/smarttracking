@@ -1,8 +1,15 @@
 """Microserviço Flask - importação manual de telemetria de wearable."""
-from flask import Flask, jsonify
+import truststore
 
-from config import Config
-from supabase_client import get_client
+# Faz o Python confiar no armazém de certificados do sistema operativo (Windows),
+# que já inclui o CA interno da rede da CMVFX. Necessário porque a rede faz
+# inspeção de TLS. Tem de correr antes de qualquer ligação HTTPS.
+truststore.inject_into_ssl()
+
+from flask import Flask, jsonify  # noqa: E402
+
+from config import Config  # noqa: E402
+from supabase_client import get_client  # noqa: E402
 
 # Tabela usada apenas para o healthcheck de ligação à base de dados.
 # Se a tua tabela de teste tiver outro nome, troca aqui.
