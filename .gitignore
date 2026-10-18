@@ -21,4 +21,4 @@ venv/
 .coverage
 htmlcov/
 .pytest_cache/
-   pwa/config.js
+pwa/config.js
