@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartTracking</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <h1>SmartTracking</h1>
+
+  <section id="login">
+    <label>Email <input id="email" type="email" autocomplete="username"></label><br>
+    <label>Password <input id="password" type="password" autocomplete="current-password"></label><br>
+    <button id="btnLogin">Entrar</button>
+  </section>
+
+  <section id="app" hidden>
+    <p>Sessão iniciada como <strong id="who"></strong></p>
+    <button id="btnLogout">Sair</button>
+  </section>
+
+  <p id="msg" role="status"></p>
+
+  <script>
+    // Só a chave ANON aqui — nunca a service_role!
+    const SUPABASE_URL = 'COLA_AQUI_O_URL';
+    const SUPABASE_ANON_KEY = 'COLA_AQUI_A_ANON_KEY';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const $ = id => document.getElementById(id);
+
+    async function render() {
+      const { data: { session } } = await sb.auth.getSession();
+      $('login').hidden = !!session;
+      $('app').hidden = !session;
+      if (session) $('who').textContent = session.user.email;
+    }
+
+    $('btnLogin').onclick = async () => {
+      const { error } = await sb.auth.signInWithPassword({
+        email: $('email').value, password: $('password').value
+      });
+      $('msg').textContent = error ? 'Erro: ' + error.message : '';
+      render();
+    };
+
+    $('btnLogout').onclick = async () => { await sb.auth.signOut(); render(); };
+
+    render();
+  </script>
+</body>
+</html>
