@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SmartTracking</title>
   <meta name="theme-color" content="#9E0918">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -210,6 +213,11 @@
       sleep_duration_min: 'Duração do sono'
     };
 
+    // Unidades em português
+    const UNITS = {
+      steps: 'passos'
+    };
+
     function showMsg(text, isError) {
       $('msg').textContent = text;
       $('msg').className = isError ? 'error' : '';
@@ -237,7 +245,7 @@
           [new Date(m.measured_at).toLocaleString('pt-PT'), ''],
           [LABELS[m.metric_type] ?? m.metric_type, ''],
           [m.metric_value, 'num'],
-          [m.unit ?? '', '']
+          [UNITS[m.unit] ?? m.unit ?? '', '']
         ];
         for (const [value, cls] of cells) {
           const td = document.createElement('td');
@@ -270,6 +278,11 @@
     $('btnLogout').onclick = async () => { await sb.auth.signOut(); showMsg(''); render(); };
 
     render();
+
+    // Torna a app instalável (só funciona em http://localhost ou https://)
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+      navigator.serviceWorker.register('sw.js');
+    }
   </script>
 </body>
 </html>
