@@ -18,23 +18,58 @@
   <section id="app" hidden>
     <p>Sessão iniciada como <strong id="who"></strong></p>
     <button id="btnLogout">Sair</button>
+
+    <h2>As minhas medições</h2>
+    <table border="1" cellpadding="4">
+      <thead>
+        <tr><th>Data</th><th>Métrica</th><th>Valor</th><th>Unidade</th></tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
   </section>
 
   <p id="msg" role="status"></p>
 
   <script>
-    // Só a chave ANON aqui — nunca a service_role!
-    const SUPABASE_URL = 'COLA_AQUI_O_URL';
-    const SUPABASE_ANON_KEY = 'COLA_AQUI_A_ANON_KEY';
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      // Só a chave ANON aqui — nunca a service_role!
+    const SUPABASE_URL = 'COLAR AQUI';
+    const SUPABASE_ANON_KEY = 'COLAR AQUI';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const $ = id => document.getElementById(id);
+
+    async function loadMeasurements() {
+      // Sem filtro por utilizador: é o RLS que decide o que volta.
+      const { data, error } = await sb
+        .from('measurements')
+        .select('metric_type, metric_value, unit, measured_at')
+        .order('measured_at', { ascending: false })
+        .limit(50);
+
+      const tbody = $('rows');
+      tbody.innerHTML = '';
+
+      if (error) { $('msg').textContent = 'Erro: ' + error.message; return; }
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4">Ainda não há medições visíveis para ti.</td></tr>';
+        return;
+      }
+      for (const m of data) {
+        const tr = document.createElement('tr');
+        [new Date(m.measured_at).toLocaleString('pt-PT'), m.metric_type, m.metric_value, m.unit ?? '']
+          .forEach(v => { const td = document.createElement('td'); td.textContent = v; tr.appendChild(td); });
+        tbody.appendChild(tr);
+      }
+    }
 
     async function render() {
       const { data: { session } } = await sb.auth.getSession();
       $('login').hidden = !!session;
       $('app').hidden = !session;
-      if (session) $('who').textContent = session.user.email;
+      if (session) {
+        $('who').textContent = session.user.email;
+        loadMeasurements();
+      }
     }
 
     $('btnLogin').onclick = async () => {
