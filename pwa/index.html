@@ -4,39 +4,216 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SmartTracking</title>
+  <meta name="theme-color" content="#9E0918">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700&display=swap" rel="stylesheet">
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- As chaves ficam em config.js, que NÃO vai para o GitHub -->
+  <script src="config.js"></script>
+
+  <style>
+    :root {
+      --vfx-red: #9E0918;        /* vermelho oficial CMVFX */
+      --vfx-red-dark: #7A0712;
+      --vfx-black: #231F20;      /* preto oficial CMVFX */
+      --bg: #F6F4F4;
+      --card: #FFFFFF;
+      --border: #E2DCDC;
+      --muted: #5E5758;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Barlow', system-ui, sans-serif;
+      font-size: 1.05rem;
+      color: var(--vfx-black);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+
+    header {
+      background: var(--vfx-red);
+      color: #fff;
+      padding: 1rem 1.25rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+    header p {
+      margin: .15rem 0 0;
+      font-size: .95rem;
+      opacity: .9;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--vfx-red);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(35, 31, 32, .06);
+    }
+
+    h2 {
+      margin: 0 0 1rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    input {
+      display: block;
+      width: 100%;
+      margin-top: .35rem;
+      padding: .7rem .8rem;
+      font: inherit;
+      border: 1px solid #BDB4B5;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    button {
+      font: inherit;
+      font-weight: 700;
+      padding: .7rem 1.4rem;
+      border-radius: 8px;
+      border: 2px solid var(--vfx-red);
+      background: var(--vfx-red);
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover { background: var(--vfx-red-dark); border-color: var(--vfx-red-dark); }
+    button.secondary {
+      background: transparent;
+      color: var(--vfx-red);
+    }
+    button.secondary:hover { background: var(--vfx-red); color: #fff; }
+
+    /* Foco bem visível para quem navega com teclado */
+    input:focus-visible, button:focus-visible {
+      outline: 3px solid var(--vfx-black);
+      outline-offset: 2px;
+    }
+
+    .userbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .userbar p { margin: 0; color: var(--muted); }
+    .userbar strong { color: var(--vfx-black); }
+
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      text-align: left;
+      padding: .65rem .75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--muted);
+      border-bottom: 2px solid var(--vfx-black);
+    }
+    td.num { font-variant-numeric: tabular-nums; font-weight: 700; }
+    tbody tr:hover { background: #FBF5F5; }
+    .empty { color: var(--muted); font-style: italic; text-align: center; padding: 1.5rem; }
+
+    #msg { margin-top: 1rem; font-weight: 500; }
+    #msg.error { color: var(--vfx-red); }
+
+    footer {
+      text-align: center;
+      font-size: .85rem;
+      color: var(--muted);
+      padding: 1rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>SmartTracking</h1>
+  <header>
+    <h1>SmartTracking</h1>
+    <p>Dados de saúde com consentimento — RGPD</p>
+  </header>
 
-  <section id="login">
-    <label>Email <input id="email" type="email" autocomplete="username"></label><br>
-    <label>Password <input id="password" type="password" autocomplete="current-password"></label><br>
-    <button id="btnLogin">Entrar</button>
-  </section>
+  <main>
+    <section id="login" class="card" aria-labelledby="loginTitle">
+      <h2 id="loginTitle">Entrar</h2>
+      <label>Email
+        <input id="email" type="email" autocomplete="username">
+      </label>
+      <label>Password
+        <input id="password" type="password" autocomplete="current-password">
+      </label>
+      <button id="btnLogin">Entrar</button>
+    </section>
 
-  <section id="app" hidden>
-    <p>Sessão iniciada como <strong id="who"></strong></p>
-    <button id="btnLogout">Sair</button>
+    <section id="app" class="card" hidden aria-labelledby="appTitle">
+      <div class="userbar">
+        <p>Sessão iniciada como <strong id="who"></strong></p>
+        <button id="btnLogout" class="secondary">Sair</button>
+      </div>
 
-    <h2>As minhas medições</h2>
-    <table border="1" cellpadding="4">
-      <thead>
-        <tr><th>Data</th><th>Métrica</th><th>Valor</th><th>Unidade</th></tr>
-      </thead>
-      <tbody id="rows"></tbody>
-    </table>
-  </section>
+      <h2 id="appTitle">As minhas medições</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Data</th><th scope="col">Métrica</th><th scope="col">Valor</th><th scope="col">Unidade</th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
 
-  <p id="msg" role="status"></p>
+    <p id="msg" role="status"></p>
+  </main>
+
+  <footer>SmartTracking · TEEM 2026</footer>
 
   <script>
-      // Só a chave ANON aqui — nunca a service_role!
-    const SUPABASE_URL = 'COLAR AQUI';
-    const SUPABASE_ANON_KEY = 'COLAR AQUI';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // URL e anon key vêm do config.js
+    const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
 
     const $ = id => document.getElementById(id);
+
+    // Nomes amigáveis para as métricas
+    const LABELS = {
+      steps: 'Passos',
+      heart_rate: 'Frequência cardíaca',
+      sleep_duration_min: 'Duração do sono'
+    };
+
+    function showMsg(text, isError) {
+      $('msg').textContent = text;
+      $('msg').className = isError ? 'error' : '';
+    }
 
     async function loadMeasurements() {
       // Sem filtro por utilizador: é o RLS que decide o que volta.
@@ -49,15 +226,25 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       const tbody = $('rows');
       tbody.innerHTML = '';
 
-      if (error) { $('msg').textContent = 'Erro: ' + error.message; return; }
+      if (error) { showMsg('Erro: ' + error.message, true); return; }
       if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4">Ainda não há medições visíveis para ti.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" class="empty">Ainda não há medições visíveis para ti.</td></tr>';
         return;
       }
       for (const m of data) {
         const tr = document.createElement('tr');
-        [new Date(m.measured_at).toLocaleString('pt-PT'), m.metric_type, m.metric_value, m.unit ?? '']
-          .forEach(v => { const td = document.createElement('td'); td.textContent = v; tr.appendChild(td); });
+        const cells = [
+          [new Date(m.measured_at).toLocaleString('pt-PT'), ''],
+          [LABELS[m.metric_type] ?? m.metric_type, ''],
+          [m.metric_value, 'num'],
+          [m.unit ?? '', '']
+        ];
+        for (const [value, cls] of cells) {
+          const td = document.createElement('td');
+          td.textContent = value;
+          if (cls) td.className = cls;
+          tr.appendChild(td);
+        }
         tbody.appendChild(tr);
       }
     }
@@ -76,11 +263,11 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       const { error } = await sb.auth.signInWithPassword({
         email: $('email').value, password: $('password').value
       });
-      $('msg').textContent = error ? 'Erro: ' + error.message : '';
+      showMsg(error ? 'Erro: ' + error.message : '', !!error);
       render();
     };
 
-    $('btnLogout').onclick = async () => { await sb.auth.signOut(); render(); };
+    $('btnLogout').onclick = async () => { await sb.auth.signOut(); showMsg(''); render(); };
 
     render();
   </script>
