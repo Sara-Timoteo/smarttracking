@@ -1,0 +1,16 @@
+[
+  {
+    "type": 900,
+    "samplePoints": [
+      {"key": "EXEMPLO_PASSOS", "startTime": 1784532600000, "endTime": 1784533500000, "value": "1234"},
+      {"key": "EXEMPLO_FC", "startTime": 1784532660000, "endTime": 1784532660000, "value": "{\"bpm\": 72, \"contexto\": \"repouso\"}"}
+    ]
+  },
+  {
+    "type": 901,
+    "samplePoints": [
+      {"key": "EXEMPLO_SONO", "startTime": 1784584800000, "endTime": 1784611800000, "value": "0"},
+      {"key": "EXEMPLO_LOCALIZACAO", "startTime": 1784532600000, "endTime": 1784532600000, "value": "{\"lat\": 38.9551, \"lon\": -8.9894}"}
+    ]
+  }
+]

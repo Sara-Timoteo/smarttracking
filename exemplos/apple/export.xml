@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Exemplo fictício com a estrutura do export.xml do Apple Health -->
+<HealthData locale="pt_PT">
+ <ExportDate value="2026-07-21 09:00:00 +0100"/>
+ <Me HKCharacteristicTypeIdentifierDateOfBirth="1980-01-01"/>
+ <Record type="HKQuantityTypeIdentifierStepCount" sourceName="iPhone de Teste" unit="count" startDate="2026-07-20 08:30:00 +0100" endDate="2026-07-20 08:45:00 +0100" value="1234"/>
+ <Record type="HKQuantityTypeIdentifierStepCount" sourceName="Apple Watch de Teste" unit="count" startDate="2026-07-20 08:30:00 +0100" endDate="2026-07-20 08:45:00 +0100" value="1210"/>
+ <Record type="HKQuantityTypeIdentifierHeartRate" sourceName="Apple Watch de Teste" unit="count/min" startDate="2026-07-20 08:31:00 +0100" endDate="2026-07-20 08:31:00 +0100" value="72">
+  <MetadataEntry key="HKMetadataKeyHeartRateMotionContext" value="1"/>
+ </Record>
+ <Record type="HKQuantityTypeIdentifierBodyMass" sourceName="Balança" unit="kg" startDate="2026-07-20 07:00:00 +0100" endDate="2026-07-20 07:00:00 +0100" value="70"/>
+ <Record type="HKCategoryTypeIdentifierSleepAnalysis" sourceName="Apple Watch de Teste" startDate="2026-07-20 22:30:00 +0100" endDate="2026-07-20 23:00:00 +0100" value="HKCategoryValueSleepAnalysisInBed"/>
+ <Record type="HKCategoryTypeIdentifierSleepAnalysis" sourceName="Apple Watch de Teste" startDate="2026-07-20 23:00:00 +0100" endDate="2026-07-21 02:00:00 +0100" value="HKCategoryValueSleepAnalysisAsleepCore"/>
+ <Record type="HKCategoryTypeIdentifierSleepAnalysis" sourceName="Apple Watch de Teste" startDate="2026-07-21 02:00:00 +0100" endDate="2026-07-21 02:20:00 +0100" value="HKCategoryValueSleepAnalysisAwake"/>
+ <Record type="HKCategoryTypeIdentifierSleepAnalysis" sourceName="Apple Watch de Teste" startDate="2026-07-21 02:20:00 +0100" endDate="2026-07-21 06:20:00 +0100" value="HKCategoryValueSleepAnalysisAsleepDeep"/>
+ <Workout workoutActivityType="HKWorkoutActivityTypeWalking" duration="30" startDate="2026-07-20 18:00:00 +0100" endDate="2026-07-20 18:30:00 +0100">
+  <WorkoutRoute sourceName="iPhone de Teste"><FileReference path="/workout-routes/route_2026-07-20.gpx"/></WorkoutRoute>
+ </Workout>
+</HealthData>

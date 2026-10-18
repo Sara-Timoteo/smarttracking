@@ -36,16 +36,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from measurement import ALLOWED_METRIC_TYPES, Measurement
 
-from .base import ConversionResult, SkippedRow
-
-# Unidade canónica de cada métrica. O mapeamento pode usar "multiply" para
-# converter (ex.: horas de sono -> minutos), mas a unidade final é sempre esta.
-CANONICAL_UNITS: dict[str, str] = {
-    "steps": "steps",
-    "heart_rate": "bpm",
-    "sleep_duration_min": "min",
-}
-
+from .base import CANONICAL_UNITS, ConversionResult, SkippedRow
 
 class MappingError(ValueError):
     """O ficheiro de mapeamento está mal construído."""
@@ -167,6 +158,22 @@ class GenericCsvConverter:
         return dt
 
     # --- conversão ----------------------------------------------------------
+
+    def convert_path(self, path: Path) -> ConversionResult:
+        with open(path, encoding="utf-8-sig", newline="") as f:
+            return self.convert(f)
+
+    def inspect(self, path: Path) -> dict[str, int]:
+        """Lista as colunas da exportação, para ajudar a escrever o mapeamento."""
+        with open(path, encoding="utf-8-sig", newline="") as f:
+            reader = csv.reader(f, delimiter=self.mapping.delimiter)
+            header = next(reader, [])
+            counts = {h.strip(): 0 for h in header}
+            for row in reader:
+                for h, v in zip(header, row):
+                    if v.strip():
+                        counts[h.strip()] += 1
+        return counts
 
     def convert(self, stream: TextIO) -> ConversionResult:
         result = ConversionResult()

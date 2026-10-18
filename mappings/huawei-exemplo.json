@@ -1,0 +1,8 @@
+{
+  "_nota": "Mapeamento para os ficheiros de exemplo (chaves fictícias). Para uma exportação real, usa huawei.json.",
+  "keys": {
+    "steps": { "key": "EXEMPLO_PASSOS" },
+    "heart_rate": { "key": "EXEMPLO_FC", "field": "bpm" },
+    "sleep_duration_min": { "key": "EXEMPLO_SONO", "duration": true }
+  }
+}

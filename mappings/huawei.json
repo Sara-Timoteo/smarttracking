@@ -1,0 +1,8 @@
+{
+  "_nota": "MODELO POR PREENCHER. Corre: python convert.py --formato huawei --inspecionar <pasta>, vê as chaves da tua exportação e consulta os ficheiros XLSX de descrição que vêm com ela.",
+  "keys": {
+    "steps": { "key": "A_CONFIRMAR_CHAVE_DOS_PASSOS" },
+    "heart_rate": { "key": "A_CONFIRMAR_CHAVE_DA_FC" },
+    "sleep_duration_min": { "key": "A_CONFIRMAR_CHAVE_DO_SONO", "duration": true }
+  }
+}
