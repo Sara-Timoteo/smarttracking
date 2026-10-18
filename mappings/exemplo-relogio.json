@@ -1,0 +1,15 @@
+{
+  "name": "exemplo-relogio",
+  "delimiter": ";",
+  "decimal": ",",
+  "timestamp": {
+    "column": "Data",
+    "format": "%d/%m/%Y %H:%M",
+    "timezone": "Europe/Lisbon"
+  },
+  "metrics": {
+    "steps": { "column": "Passos" },
+    "heart_rate": { "column": "FC média" },
+    "sleep_duration_min": { "column": "Sono (h)", "multiply": 60 }
+  }
+}
